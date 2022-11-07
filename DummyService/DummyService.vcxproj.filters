@@ -48,5 +48,8 @@
     <None Include="..\README.md">
       <Filter>ProjectFiles</Filter>
     </None>
+    <None Include="..\.github\workflows\msbuild.yml">
+      <Filter>ProjectFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>
