@@ -18,17 +18,39 @@ public:
 		return S_OK;
 	}
 
-	void OnStop();
-	void OnShutdown();
+	void OnStop()
+	{
+		ATL::CAtlServiceModuleT<ServiceModule, IDS_SERVICE_NAME>::OnStop();
+	}
+		
+	void OnShutdown()
+	{
+		ATL::CAtlServiceModuleT<ServiceModule, IDS_SERVICE_NAME>::OnShutdown();
+	}
 
-	HRESULT Run(int nShowCmd);
-
-private:
-	HANDLE m_hThread = nullptr;
+	HRESULT Run(int nShowCmd)
+	{
+		return CAtlServiceModuleT::Run(nShowCmd);
+	}
 
 } ServiceObject;
 
+/*
+extern "C" int WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int nShowCmd)
+{
+	DWORD dwReturnVal = 0;
+
+	dwReturnVal = ServiceObject.WinMain(nShowCmd);
+
+	return dwReturnVal;
+}
+*/
+
 extern "C" int WINAPI _tWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpCmdLine*/, int nShowCmd)
 {
-	return ServiceObject.WinMain(nShowCmd);
+	DWORD dwReturnVal = 0;
+
+	dwReturnVal = ServiceObject.WinMain(nShowCmd);
+
+	return dwReturnVal;
 }

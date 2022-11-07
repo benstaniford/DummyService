@@ -20,4 +20,5 @@
 #include <atlcom.h>
 #include <atlctl.h>
 #include <atltime.h>
+#include <atlsecurity.h>
 #include <Windows.h>
