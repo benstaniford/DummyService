@@ -9,8 +9,8 @@ public:
 		m_status.dwControlsAccepted |= SERVICE_ACCEPT_SHUTDOWN;
 	}
 
-	//DECLARE_LIBID(LIBID_DefendpointServiceLib)
-	DECLARE_REGISTRY_APPID_RESOURCEID(IDR_DUMMY_SERVICE, "{21E9BB28-4990-4246-B705-64ED0A80F51B}")
+	//DECLARE_LIBID(LIBID_DummyServiceLib)
+	DECLARE_REGISTRY_APPID_RESOURCEID(IDR_DUMMY_SERVICE, "{EB8C8791-0B95-4DE2-8818-9EA6EBFA3E4A}")
 
 	HRESULT InitializeSecurity() throw()
 	{
@@ -20,12 +20,12 @@ public:
 
 	void OnStop()
 	{
-		ATL::CAtlServiceModuleT<ServiceModule, IDS_SERVICE_NAME>::OnStop();
+		Base::OnStop();
 	}
 		
 	void OnShutdown()
 	{
-		ATL::CAtlServiceModuleT<ServiceModule, IDS_SERVICE_NAME>::OnShutdown();
+		Base::OnShutdown();
 	}
 
 	HRESULT Run(int nShowCmd)
@@ -33,24 +33,12 @@ public:
 		return CAtlServiceModuleT::Run(nShowCmd);
 	}
 
+private:
+	using Base = ATL::CAtlServiceModuleT<ServiceModule, IDS_SERVICE_NAME>;
+
 } ServiceObject;
 
-/*
 extern "C" int WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int nShowCmd)
 {
-	DWORD dwReturnVal = 0;
-
-	dwReturnVal = ServiceObject.WinMain(nShowCmd);
-
-	return dwReturnVal;
-}
-*/
-
-extern "C" int WINAPI _tWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpCmdLine*/, int nShowCmd)
-{
-	DWORD dwReturnVal = 0;
-
-	dwReturnVal = ServiceObject.WinMain(nShowCmd);
-
-	return dwReturnVal;
+	return ServiceObject.WinMain(nShowCmd);
 }
