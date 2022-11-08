@@ -46,3 +46,10 @@ jobs:
       id: run_vstest
       working-directory: ${{matrix.platform}}\${{env.BUILD_CONFIGURATION}}\
       run: vstest.console.exe /Platform:${{matrix.platform}} .\DummyServiceLibTests.dll
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: DummyInstaller-${{env.BUILD_CONFIGURATION}}.msi
+        path: DummyService/DummyService/DummyInstaller/bin/${{matrix.platform}}/${{env.BUILD_CONFIGURATION}}/DummyInstaller.msi
+
