@@ -58,7 +58,7 @@ jobs:
     - name: Run VSTest
       id: run_vstest
       working-directory: ${{env.VS_PLATFORM}}\${{env.BUILD_CONFIGURATION}}\
-      run: vstest.console.exe /Platform:${{env.VS_PLATFORM}} .\DummyServiceLibTests.dll
+      run: vstest.console.exe /Platform:${{matrix.platform}} .\DummyServiceLibTests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
