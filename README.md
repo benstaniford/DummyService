@@ -1,6 +1,6 @@
 # DummyService
 
-A dummy Windows service (based on the ATL service template) which builds the service and installer via GitHub actions.
+A dummy/sample Windows service written in C++ (based on the ATL service template) which builds the service and installer via GitHub actions and publishes the MSIs via GitHub actions.
 
 # Projects
  - DummyInstaller - WiX installer project
