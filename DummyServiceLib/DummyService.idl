@@ -1,0 +1,18 @@
+// DummyService.idl : IDL source for DummyService
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DummyService.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(42D7F788-2D3C-4B42-97EA-4B881B1E7ECC),
+	version(1.0),
+	helpstring("DummyService 1.0 Type Library")
+]
+library DummyServiceLib
+{
+	importlib("stdole2.tlb");
+};

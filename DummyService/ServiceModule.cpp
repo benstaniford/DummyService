@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ServiceModule.h"
+#include "DummyServiceLib/DummyService_h.h"
 #include "DummyServiceLib/DummyService.h"
 
 class ServiceModule : public ATL::CAtlServiceModuleT<ServiceModule, IDS_SERVICE_NAME>
@@ -10,7 +11,7 @@ public:
 		m_status.dwControlsAccepted |= SERVICE_ACCEPT_SHUTDOWN;
 	}
 
-	//DECLARE_LIBID(LIBID_DummyServiceLib)
+	DECLARE_LIBID(LIBID_DummyServiceLib)
 	DECLARE_REGISTRY_APPID_RESOURCEID(IDR_DUMMY_SERVICE, "{EB8C8791-0B95-4DE2-8818-9EA6EBFA3E4A}")
 
 	HRESULT InitializeSecurity() throw()
