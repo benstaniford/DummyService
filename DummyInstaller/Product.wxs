@@ -50,7 +50,7 @@
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
       <!-- Include the correct VC runtime -->
-      <Merge Id="VCRedist" SourceFile="C:\Program Files\Common Files\Merge Modules\$(var.VcRuntimeMergeModule)" DiskId="1" Language="0"/>
+      <Merge Id="VCRedist" SourceFile="MergeModules\$(var.VcRuntimeMergeModule)" DiskId="1" Language="0"/>
 
       <Directory Id="$(var.PlatformProgramFilesFolder)">
 				<Directory Id="INSTALLFOLDER" Name="DummyInstaller" />
