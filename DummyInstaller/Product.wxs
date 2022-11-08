@@ -12,8 +12,13 @@
 <?define UpgradeCode = "{be5d451f-4a84-4114-8e13-8f54bfd54739}" ?>
 <!-- Service GUID must be unique and not changed once the first version of the program is installed. -->
 <?define ServiceGuid = "{3962817c-dd58-4639-a488-b08de58914e8}" ?>
+<!-- AppID, must match GUID in ServiceModule.cpp, the service won't start without it -->
+<?define AppId = "{EB8C8791-0B95-4DE2-8818-9EA6EBFA3E4A}" ?>
 
-<!-- Set config/platform specific variables -->
+<!--
+  Set config/platform specific variables
+  New Merge Modules can be found in: C:\Program Files (x86)\Common Files\Merge Modules
+-->
 <?if $(var.Platform) = x64 ?>
   <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
   <?if $(var.Configuration) = Release ?>
@@ -31,39 +36,50 @@
 <?endif ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="$(var.Name)" Language="1033" Version="$(var.Version)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+   <Product Id="*" Name="$(var.Name)" Language="1033" Version="$(var.Version)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)">
+      <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
     <!-- Create a folder inside Talk Sharp called Test Service -->
     <Media Id="1" Cabinet="$(var.Name).cab" EmbedCab="yes" />
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+      <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
-		<Feature Id="ProductFeature" Title="DummyInstaller" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
-		</Feature>
+      <Feature Id="ProductFeature" Title="DummyInstaller" Level="1">
+         <ComponentGroupRef Id="ProductComponents" />
+      </Feature>
 
     <Feature Id="VCRedist" Title="Visual C++ 2022 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
       <MergeRef Id="VCRedist"/>
     </Feature>
   </Product>
 
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
+   <Fragment>
+      <Directory Id="TARGETDIR" Name="SourceDir">
+
       <!-- Include the correct VC runtime -->
       <Merge Id="VCRedist" SourceFile="MergeModules\$(var.VcRuntimeMergeModule)" DiskId="1" Language="0"/>
 
       <Directory Id="$(var.PlatformProgramFilesFolder)">
-				<Directory Id="INSTALLFOLDER" Name="DummyInstaller" />
-			</Directory>
-		</Directory>
-	</Fragment>
+            <Directory Id="INSTALLFOLDER" Name="DummyInstaller" />
+         </Directory>
+      </Directory>
+   </Fragment>
 
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+   <Fragment>
+      <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+
+      <!-- Add default registry entries (or preserve them on upgrade) -->
+      <Component Id="RegistryEntries" Guid="8650358D-8806-483B-84F8-88DC138FF103">
+        <RegistryKey Root="HKCR"
+                     Key="AppID\$(var.AppId)">
+          <RegistryValue Type="string" Value="$(var.ServiceDesc)"/>
+          <RegistryValue Type="string" Name="LocalService" Value="$(var.ServiceDesc)"/>
+        </RegistryKey>
+      </Component>
+
       <Component Id="$(var.DummyService.TargetFileName)" Guid="$(var.ServiceGuid)">
         <File Id="$(var.DummyService.TargetFileName)" Source="$(var.DummyService.TargetPath)" KeyPath="yes" />
 
-				<!-- Install the service -->
+        <!-- Install the service -->
         <ServiceInstall Id="ServiceInstaller"
         Type="ownProcess"
         Name="$(var.Name)"
@@ -76,5 +92,5 @@
         <ServiceControl Id="StartService" Start="install" Stop="both" Remove="uninstall" Name="$(var.Name)" Wait="yes" />
       </Component>
     </ComponentGroup>
-	</Fragment>
+   </Fragment>
 </Wix>
