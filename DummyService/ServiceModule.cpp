@@ -16,8 +16,15 @@ public:
 
 	HRESULT InitializeSecurity() throw()
 	{
-		// TODO : Call CoInitializeSecurity and provide the appropriate security settings for the service
-		return S_OK;
+		// Initalize COM
+        HRESULT hr = CoInitializeEx(nullptr, COINITBASE_MULTITHREADED);
+		if (FAILED(hr))
+		{
+			return hr;
+		}
+
+		// Initialize the security DACL on the service
+		return CoInitializeSecurity(nullptr, -1, nullptr, nullptr, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE, 0);
 	}
 
 	void OnStop()
@@ -32,7 +39,11 @@ public:
 
 	HRESULT Run(int nShowCmd)
 	{
+		LogEvent(L"Run Started");
+        
 		m_service.Run();
+
+		// Run the message loop
 		return CAtlServiceModuleT::Run(nShowCmd);
 	}
 
