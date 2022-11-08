@@ -50,6 +50,18 @@
     <Feature Id="VCRedist" Title="Visual C++ 2022 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
       <MergeRef Id="VCRedist"/>
     </Feature>
+
+     <!-- Include UI Extension (needs references to WixUIExtension.dll and WixUtilExtension.dll) so that we can launch settings on completion -->
+     <Property Id="WixShellExecTarget" Value="[#$(var.Name).exe]" />
+     <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+     <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+     <UI>
+       <UIRef Id="WixUI_Minimal" />
+       <Publish Dialog="ExitDialog"
+         Control="Finish"
+         Event="DoAction"
+         Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+     </UI>
   </Product>
 
    <Fragment>
