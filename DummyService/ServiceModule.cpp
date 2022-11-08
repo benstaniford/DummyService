@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ServiceModule.h"
+#include "DummyServiceLib/DummyService.h"
 
 class ServiceModule : public ATL::CAtlServiceModuleT<ServiceModule, IDS_SERVICE_NAME>
 {
@@ -30,15 +31,17 @@ public:
 
 	HRESULT Run(int nShowCmd)
 	{
+		m_service.Run();
 		return CAtlServiceModuleT::Run(nShowCmd);
 	}
 
 private:
 	using Base = ATL::CAtlServiceModuleT<ServiceModule, IDS_SERVICE_NAME>;
+	dummyservice::DummyService m_service;
 
-} ServiceObject;
+} ServiceModuleObject;
 
 extern "C" int WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int nShowCmd)
 {
-	return ServiceObject.WinMain(nShowCmd);
+	return ServiceModuleObject.WinMain(nShowCmd);
 }
