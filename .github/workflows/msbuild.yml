@@ -11,8 +11,6 @@ env:
 
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-  BUILD_CONFIGURATION: Release
-  BUILD_PLATFORM: x64
 
 permissions:
   contents: read
@@ -23,6 +21,7 @@ jobs:
     strategy:
       matrix:
         platform: ["x64", "x86"]
+        configuration: ["Debug", "Release"]
 
     steps:
     - uses: actions/checkout@v3
@@ -49,7 +48,7 @@ jobs:
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{matrix.platform}} ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} ${{env.SOLUTION_FILE_PATH}}
 
     - name: Locate VSTest
       uses: benstaniford/Setup-VSTest@v1
@@ -57,12 +56,12 @@ jobs:
 
     - name: Run VSTest
       id: run_vstest
-      working-directory: ${{env.VS_PLATFORM}}\${{env.BUILD_CONFIGURATION}}\
+      working-directory: ${{env.VS_PLATFORM}}\${{matrix.configuration}}\
       run: vstest.console.exe /Platform:${{matrix.platform}} .\DummyServiceLibTests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: DummyInstaller-${{env.BUILD_CONFIGURATION}}-${{matrix.platform}}.msi
-        path: DummyInstaller/bin/${{matrix.platform}}/${{env.BUILD_CONFIGURATION}}/DummyInstaller.msi
+        name: DummyInstaller-${{matrix.configuration}}-${{matrix.platform}}.msi
+        path: DummyInstaller/bin/${{matrix.platform}}/${{matrix.configuration}}/DummyInstaller.msi
 
