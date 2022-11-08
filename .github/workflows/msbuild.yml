@@ -64,5 +64,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: DummyInstaller-${{env.BUILD_CONFIGURATION}}-${{matrix.platform}}.msi
-        path: DummyService/DummyService/DummyInstaller/bin/${{matrix.platform}}/${{env.BUILD_CONFIGURATION}}/DummyInstaller.msi
+        path: DummyService/DummyInstaller/bin/${{matrix.platform}}/${{env.BUILD_CONFIGURATION}}/DummyInstaller.msi
 
