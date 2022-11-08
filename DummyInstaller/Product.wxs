@@ -10,7 +10,10 @@
 <?define Version = "1.0.0" ?>
 <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
 <?define UpgradeCode = "{be5d451f-4a84-4114-8e13-8f54bfd54739}" ?>
+<!-- Service GUID must be unique and not changed once the first version of the program is installed. -->
+<?define ServiceGuid = "{3962817c-dd58-4639-a488-b08de58914e8}" ?>
 
+<!-- Set config/platform specific variables -->
 <?if $(var.Platform) = x64 ?>
   <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
   <?if $(var.Configuration) = Release ?>
@@ -47,7 +50,7 @@
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
       <!-- Include the correct VC runtime -->
-      <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\$(var.VcRuntimeMergeModule)" DiskId="1" Language="0"/>
+      <Merge Id="VCRedist" SourceFile="C:\Program Files\Common Files\Merge Modules\$(var.VcRuntimeMergeModule)" DiskId="1" Language="0"/>
 
       <Directory Id="$(var.PlatformProgramFilesFolder)">
 				<Directory Id="INSTALLFOLDER" Name="DummyInstaller" />
@@ -57,7 +60,7 @@
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="$(var.DummyService.TargetFileName)" Guid="3962817c-dd58-4639-a488-b08de58914e8">
+      <Component Id="$(var.DummyService.TargetFileName)" Guid="$(var.ServiceGuid)">
         <File Id="$(var.DummyService.TargetFileName)" Source="$(var.DummyService.TargetPath)" KeyPath="yes" />
 
 				<!-- Install the service -->
