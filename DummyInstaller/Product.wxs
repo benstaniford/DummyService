@@ -30,11 +30,18 @@
 		<Feature Id="ProductFeature" Title="DummyInstaller" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
-	</Product>
+
+    <!--
+    <Feature Id="VCRedist" Title="Visual C++ 2022 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="VCRedist"/>
+    </Feature>
+    -->
+  </Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="PlatformProgramFilesFolder">
+      <!--<Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_x64.msm" DiskId="1" Language="0"/>-->
+      <Directory Id="$(var.PlatformProgramFilesFolder)">
 				<Directory Id="INSTALLFOLDER" Name="DummyInstaller" />
 			</Directory>
 		</Directory>
