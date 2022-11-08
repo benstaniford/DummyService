@@ -12,11 +12,19 @@
 <?define UpgradeCode = "{be5d451f-4a84-4114-8e13-8f54bfd54739}" ?>
 
 <?if $(var.Platform) = x64 ?>
-<?define Win64 = "yes" ?>
-<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+  <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+  <?if $(var.Configuration) = Release ?>
+    <?define VcRuntimeMergeModule = "Microsoft_VC140_CRT_x64.msm" ?>
+  <?else ?>
+    <?define VcRuntimeMergeModule = "Microsoft_VC140_DebugCRT_x64.msm" ?>
+  <?endif ?>
 <?else ?>
-<?define Win64 = "no" ?>
-<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+  <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+  <?if $(var.Configuration) = Release ?>
+    <?define VcRuntimeMergeModule = "Microsoft_VC140_CRT_x86.msm" ?>
+  <?else ?>
+    <?define VcRuntimeMergeModule = "Microsoft_VC140_DebugCRT_x86.msm" ?>
+  <?endif ?>
 <?endif ?>
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
@@ -31,16 +39,16 @@
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
 
-    <!--
     <Feature Id="VCRedist" Title="Visual C++ 2022 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
       <MergeRef Id="VCRedist"/>
     </Feature>
-    -->
   </Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
-      <!--<Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_x64.msm" DiskId="1" Language="0"/>-->
+      <!-- Include the correct VC runtime -->
+      <Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\$(var.VcRuntimeMergeModule)" DiskId="1" Language="0"/>
+
       <Directory Id="$(var.PlatformProgramFilesFolder)">
 				<Directory Id="INSTALLFOLDER" Name="DummyInstaller" />
 			</Directory>
