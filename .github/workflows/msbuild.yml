@@ -42,4 +42,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: DummyInstaller.msi
-        path: d:/a/DummyService/DummyService/DummyInstaller/bin/Release/DummyInstaller.msi
+        path: d:/a/DummyService/DummyService/DummyInstaller/bin/Release/${{env.BUILD_CONFIGURATION}}Installer.msi
