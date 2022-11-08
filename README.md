@@ -12,4 +12,7 @@ A dummy Windows service (based on the ATL service template) which builds the ser
  - Add some registry actions to the service so it's installed correctly
  - Signing?
  - Initialize service CoInitializeSecurity
- - Property sheets
+ - Short service name / Longer display name
+ - VC Runtimes
+ - UI and license on installer
+ - PDBs published
