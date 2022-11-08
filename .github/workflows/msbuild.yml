@@ -24,8 +24,16 @@ jobs:
       matrix:
         platform: ["x64", "x86"]
 
+    env:
+      VS_PLATFORM: ${{ matrix.platform }}
+
     steps:
     - uses: actions/checkout@v3
+
+    # WiX projects have to use x86 and cpp projects have to use Win32, so make the latter available as VS_PLATFORM
+    - name: Override VS_PLATFORM if required
+      run: echo "VS_PLATFORM=Win32" >> $GITHUB_ENV
+      if: matrix.platform == 'x86'
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
@@ -44,8 +52,8 @@ jobs:
 
     - name: Run VSTest
       id: run_vstest
-      working-directory: ${{matrix.platform}}\${{env.BUILD_CONFIGURATION}}\
-      run: vstest.console.exe /Platform:${{matrix.platform}} .\DummyServiceLibTests.dll
+      working-directory: ${{env.VS_PLATFORM}}\${{env.BUILD_CONFIGURATION}}\
+      run: vstest.console.exe /Platform:${{env.VS_PLATFORM}} .\DummyServiceLibTests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
