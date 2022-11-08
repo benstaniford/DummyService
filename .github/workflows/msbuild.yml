@@ -40,5 +40,5 @@ jobs:
 
     - name: Run VSTest
       id: run_vstest
-      working-directory: $\x64\${{env.BUILD_CONFIGURATION}}\
-      run: vstest.console.exe /Platform:x64 .\DummyServiceLibTests.dll
+      working-directory: ${{env.BUILD_PLATFORM}}\${{env.BUILD_CONFIGURATION}}\
+      run: vstest.console.exe /Platform:${{env.BUILD_PLATFORM}} .\DummyServiceLibTests.dll
