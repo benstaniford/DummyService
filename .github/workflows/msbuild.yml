@@ -20,6 +20,9 @@ permissions:
 jobs:
   build:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: ["x64", "x86"]
 
     steps:
     - uses: actions/checkout@v3
@@ -33,7 +36,7 @@ jobs:
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{matrix.platform}} ${{env.SOLUTION_FILE_PATH}}
 
     - name: Locate VSTest
       uses: benstaniford/Setup-VSTest@v1
@@ -41,5 +44,5 @@ jobs:
 
     - name: Run VSTest
       id: run_vstest
-      working-directory: ${{env.BUILD_PLATFORM}}\${{env.BUILD_CONFIGURATION}}\
-      run: vstest.console.exe /Platform:${{env.BUILD_PLATFORM}} .\DummyServiceLibTests.dll
+      working-directory: ${{matrix.platform}}\${{env.BUILD_CONFIGURATION}}\
+      run: vstest.console.exe /Platform:${{matrix.platform}} .\DummyServiceLibTests.dll
