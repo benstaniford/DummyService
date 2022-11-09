@@ -11,6 +11,7 @@ A dummy/sample Windows service written in C++ (based on the ATL service template
  # Features
  - Publishes installers on all platforms and configurations
  - Unit tests run via GitHub
+ - Installer built and works for all platforms/configurations
  - Packages correct merge modules for VCRuntimes
  - Service installed with SCM and can be started/stopped
 
